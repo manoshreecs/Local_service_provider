@@ -10,17 +10,17 @@ connectdb();
 const app = express();
 
 // Middleware
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(cors({
-    origin: process.env.CLIENT_URL || "*",
-    credentials: true
-}));
+app.use(
+    cors({
+        origin: process.env.CLIENT_URL || "*",
+        credentials: true,
+    })
+);
 
 // Routes
-
 import authroutes from "./routes/authroutes.js";
 import providerroutes from "./routes/providerroutes.js";
 import bookingroutes from "./routes/bookingroutes.js";
@@ -33,24 +33,22 @@ app.get("/api", (req, res) => {
     res.json({ message: "API is running 🚀" });
 });
 
-
 const __dirname = path.resolve();
 
 if (process.env.NODE_ENV === "production") {
-    // Serve frontend build files
-    app.use(express.static(path.join(__dirname, "../dist")));
+    // Serve frontend static files from frontend/dist
+    app.use(express.static(path.join(__dirname, "frontend", "dist")));
 
-    // Handle React routing
-    app.get("*", (req, res) =>
-        res.sendFile(path.resolve(__dirname, "../dist/index.html"))
+    // Catch-all route for React SPA
+    app.get("/*", (req, res) =>
+        res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"))
     );
 }
 
-
+// 404 handler for API routes
 app.use((req, res) => {
     res.status(404).json({ message: "Route not found" });
 });
-
 
 const port = process.env.PORT || 5000;
 
