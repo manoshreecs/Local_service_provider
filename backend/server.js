@@ -36,16 +36,18 @@ app.get("/api", (req, res) => {
 const __dirname = path.resolve();
 
 if (process.env.NODE_ENV === "production") {
-    // Serve frontend static files from frontend/dist
-    app.use(express.static(path.join(__dirname, "frontend", "dist")));
+    // Serve frontend static files
+    const frontendPath = path.join(__dirname, "frontend", "dist");
+    app.use(express.static(frontendPath));
 
-    // Catch-all route for React SPA
-    app.get("/*", (req, res) =>
-        res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"))
-    );
+    // Fallback for all unmatched routes
+    app.use((req, res, next) => {
+        if (req.path.startsWith("/api")) return next(); // don't handle API routes
+        res.sendFile(path.join(frontendPath, "index.html"));
+    });
 }
 
-// 404 handler for API routes
+// 404 handler for any other routes
 app.use((req, res) => {
     res.status(404).json({ message: "Route not found" });
 });
