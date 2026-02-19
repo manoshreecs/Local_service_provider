@@ -8,16 +8,15 @@ connectdb();
 
 const app = express();
 
-// Middleware
+app.use(cors({
+    origin: "https://frontend-service-g8rw.onrender.com",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true
+}));
+
+app.options("*", cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-app.use(
-    cors({
-        origin: process.env.CLIENT_URL || "*",
-        credentials: true,
-    })
-);
 
 // Routes
 import authroutes from "./routes/authroutes.js";
@@ -28,7 +27,7 @@ app.use("/api/auth", authroutes);
 app.use("/api/providers", providerroutes);
 app.use("/api/bookings", bookingroutes);
 
-// Root route to check backend
+// Root route
 app.get("/", (req, res) => {
     res.send("Backend is running 🚀");
 });
