@@ -1,11 +1,14 @@
 import axios from "axios";
 
-const api = axios.create({
-    baseURL: import.meta.env.MODE === "development" ?
-        "http://localhost:5000/api" :
-        "/api",
-});
+const API_BASE_URL =
+    process.env.NODE_ENV === "production" ?
+    "https://local-service-provider-1-f3vc.onrender.com/api" :
+    "http://localhost:5000/api";
 
+const api = axios.create({
+    baseURL: API_BASE_URL,
+    withCredentials: false,
+});
 api.interceptors.request.use((req) => {
     const token = localStorage.getItem("token");
     if (token) {
