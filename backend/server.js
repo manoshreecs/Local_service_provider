@@ -10,9 +10,11 @@ const app = express();
 
 app.use(cors({
     origin: "https://frontend-service-g8rw.onrender.com",
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
 }));
+
 
 app.options("*", cors());
 app.use(express.json());
