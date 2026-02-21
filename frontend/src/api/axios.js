@@ -1,13 +1,8 @@
 import axios from "axios";
 
-const API_BASE_URL =
-    process.env.NODE_ENV === "production" ?
-    "https://backend-service-fyex.onrender.com/api" :
-    "http://localhost:5000/api";
-
 const api = axios.create({
-    baseURL: API_BASE_URL,
-    withCredentials: false,
+    baseURL: "https://backend-service-fyex.onrender.com/api",
+    withCredentials: true
 });
 
 api.interceptors.request.use((req) => {
