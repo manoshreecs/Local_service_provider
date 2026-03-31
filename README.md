@@ -48,7 +48,7 @@ This project highlights full-stack development, secure authentication, role-base
 ### Frontend
 - React  
 - React Router  
-- Tailwind/ CSS  
+- TailwindCSS  
 
 ### Backend
 - Node.js  
